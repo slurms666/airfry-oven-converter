@@ -250,10 +250,19 @@ export function ConversionForm({
                   </div>
                 )}
               </div>
-              <p className="basket-help-copy">
-                Single layer gives the best airflow and crisping. Packed baskets often need
-                more time and more shaking.
-              </p>
+              <div className="basket-help-copy">
+                <p>
+                  Left: overfilled baskets block airflow and usually cook less evenly.
+                </p>
+                <p>
+                  Right: slight overlap is still workable, but it often needs a little more
+                  time and a couple of timed shakes.
+                </p>
+                <p>
+                  Best case: a true single layer leaves small gaps where you can still see the
+                  tray below the food.
+                </p>
+              </div>
             </div>
           ) : null}
         </div>
