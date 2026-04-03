@@ -1,10 +1,23 @@
 import type {
   BasketLoad,
+  BasketLoadSensitivity,
   CategoryProfile,
   ConfidenceResult,
   ConversionInput,
   FryerClassProfile,
 } from '../types';
+
+const overlapPenaltyBySensitivity: Record<BasketLoadSensitivity, number> = {
+  low: 5,
+  medium: 8,
+  high: 10,
+};
+
+const packedPenaltyBySensitivity: Record<BasketLoadSensitivity, number> = {
+  low: 12,
+  medium: 18,
+  high: 24,
+};
 
 function mapScoreToLevel(score: number): ConfidenceResult['level'] {
   if (score >= 85) {
@@ -50,22 +63,22 @@ export function calculateConfidence(
     cautions.push('The oven instruction needed a fan-equivalent adjustment first.');
   }
 
-  if (input.basketLoad === 'some_overlap') {
-    score -= 10;
-    cautions.push('Some basket overlap can stretch the timing.');
+  if (input.basketLoad === 'overlap') {
+    score -= overlapPenaltyBySensitivity[category.basketLoadSensitivity];
+    cautions.push('Slight overlap cuts down airflow, so timing can stretch a little.');
   }
 
-  if (input.basketLoad === 'crowded') {
-    score -= 20;
-    cautions.push('A crowded basket changes the result more than usual.');
+  if (input.basketLoad === 'packed') {
+    score -= packedPenaltyBySensitivity[category.basketLoadSensitivity];
+    cautions.push('A packed basket reduces airflow, so the result can vary more and usually takes longer.');
   }
 
   if (
-    input.basketLoad === 'crowded' &&
+    input.basketLoad === 'packed' &&
     input.fryerClassId === 'drawer_compact_low'
   ) {
-    score -= 10;
-    cautions.push('Compact drawers are especially sensitive when packed tightly.');
+    score -= 8;
+    cautions.push('Compact drawers are especially sensitive when the basket is packed.');
   }
 
   if (category.id === 'simple_vegetable_sides') {
@@ -112,13 +125,13 @@ export function calculateConfidence(
 }
 
 export function describeLoadEffect(load: BasketLoad): string {
-  if (load === 'crowded') {
-    return 'Cook in batches if you can.';
+  if (load === 'packed') {
+    return 'Packed basket.';
   }
 
-  if (load === 'some_overlap') {
-    return 'A little overlap is workable, but expect a slightly longer cook.';
+  if (load === 'overlap') {
+    return 'Slight overlap.';
   }
 
-  return 'Single-layer cooking gives the most reliable starting point.';
+  return 'Best airflow.';
 }

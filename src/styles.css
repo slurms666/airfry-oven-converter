@@ -245,6 +245,12 @@ h2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.load-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
 .choice-card {
   position: relative;
   min-height: 118px;
@@ -304,6 +310,11 @@ h2 {
 
 .choice-copy {
   font-size: 0.92rem;
+}
+
+.load-card {
+  min-height: 106px;
+  padding-right: 18px;
 }
 
 .number-grid {
@@ -434,6 +445,67 @@ h2 {
   gap: 20px;
   padding: 0 20px 20px;
   border-top: 1px solid var(--line);
+}
+
+.basket-help-block {
+  display: grid;
+  gap: 12px;
+}
+
+.text-button {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #5f7430;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.text-button:hover,
+.text-button:focus-visible {
+  color: var(--ink);
+  outline: none;
+}
+
+.basket-help-panel {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcf7 100%);
+}
+
+.basket-help-media {
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--surface-muted);
+}
+
+.basket-help-image,
+.basket-help-placeholder {
+  display: block;
+  width: 100%;
+}
+
+.basket-help-image {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.basket-help-placeholder {
+  min-height: 220px;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  text-align: center;
+}
+
+.basket-help-copy {
+  margin: 0;
+  color: var(--muted);
 }
 
 .primary-button {
@@ -866,6 +938,7 @@ h2 {
 
   .category-grid,
   .fryer-grid,
+  .load-grid,
   .number-grid,
   .fact-grid,
   .help-strip {

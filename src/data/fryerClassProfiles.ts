@@ -9,8 +9,8 @@ export const fryerClassProfiles: FryerClassProfile[] = [
     timeMultiplier: 1.1,
     confidenceAdjustment: 0,
     loadAdjustments: {
-      some_overlap: 0.05,
-      crowded: 0.05,
+      overlap: 0.03,
+      packed: 0.06,
     },
   },
   {
@@ -30,8 +30,8 @@ export const fryerClassProfiles: FryerClassProfile[] = [
     timeMultiplier: 0.92,
     confidenceAdjustment: 0,
     loadAdjustments: {
-      some_overlap: -0.03,
-      crowded: -0.05,
+      overlap: -0.02,
+      packed: -0.03,
     },
   },
   {
@@ -42,8 +42,8 @@ export const fryerClassProfiles: FryerClassProfile[] = [
     timeMultiplier: 0.98,
     confidenceAdjustment: -15,
     loadAdjustments: {
-      some_overlap: 0.02,
-      crowded: 0.03,
+      overlap: 0.01,
+      packed: 0.02,
     },
   },
 ];

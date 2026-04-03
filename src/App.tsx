@@ -12,6 +12,10 @@ import {
 import type { FormValues, ConversionResult, ValidationErrors } from './types';
 
 const initialCategory = 'fries_chips_wedges' as const;
+const basketLoadHelpImage = {
+  src: '/basket-load-example.png',
+  alt: 'Comparison showing an air fryer basket that is too full beside a better single-layer basket setup.',
+};
 
 const initialFormValues: FormValues = {
   ovenTemp: '200',
@@ -20,7 +24,7 @@ const initialFormValues: FormValues = {
   categoryId: initialCategory,
   state: categoryProfileMap[initialCategory].defaultState,
   fryerClassId: 'drawer_standard',
-  basketLoad: 'single_layer',
+  basketLoad: 'single',
   crispness: 'standard',
   thickness: 'standard',
   exactWattage: '',
@@ -121,11 +125,12 @@ export default function App() {
             <p className="eyebrow">Converter</p>
             <h2>Practical first, with the core inputs kept up front.</h2>
             <p>
-              Pick the closest supported food, enter the pack oven instructions, then refine the
-              result only if basket load, crispness, cut style, or wattage matter for your setup.
+              Pick the closest supported food, enter the pack oven instructions, choose your fryer
+              class, then set basket load so the result better reflects real airflow and crowding.
             </p>
           </div>
           <ConversionForm
+            basketLoadHelpImage={basketLoadHelpImage}
             errors={errors}
             onFieldChange={updateField}
             onSubmit={handleSubmit}

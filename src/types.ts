@@ -12,7 +12,8 @@ export type FryerClassId =
   | 'drawer_standard'
   | 'drawer_dual_high'
   | 'oven_or_combi_large';
-export type BasketLoad = 'single_layer' | 'some_overlap' | 'crowded';
+export type BasketLoad = 'single' | 'overlap' | 'packed';
+export type BasketLoadSensitivity = 'low' | 'medium' | 'high';
 export type Crispness = 'standard' | 'extra_crispy';
 export type Thickness = 'thin' | 'standard' | 'thick';
 export type AgitationId =
@@ -54,8 +55,9 @@ export interface CategoryProfile {
   supportsCrispness: boolean;
   supportsThickness: boolean;
   thicknessLabel?: string;
-  loadGuidance: string;
-  batchGuidance: string;
+  basketLoadSensitivity: BasketLoadSensitivity;
+  basketLoadNotes: Record<BasketLoad, string>;
+  basketLoadTimeAdjustments: Record<BasketLoad, number>;
   confidenceAdjustment: number;
   frozenConfidenceBoost: boolean;
   pipingHotNote: boolean;

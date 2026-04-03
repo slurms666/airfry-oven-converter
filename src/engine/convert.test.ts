@@ -20,7 +20,7 @@ describe('convertOvenToAirFryer', () => {
       categoryId: 'fries_chips_wedges',
       state: 'frozen',
       fryerClassId: 'drawer_standard',
-      basketLoad: 'single_layer',
+      basketLoad: 'single',
       crispness: 'standard',
       thickness: 'standard',
     });
@@ -40,7 +40,7 @@ describe('convertOvenToAirFryer', () => {
     expect(result.confidence.level).toBe('high');
   });
 
-  it('makes compact crowded baskets slower than dual drawers', () => {
+  it('makes compact packed baskets slower than dual drawers', () => {
     const compact = convertOvenToAirFryer({
       ovenTemp: 200,
       ovenTime: 20,
@@ -48,7 +48,7 @@ describe('convertOvenToAirFryer', () => {
       categoryId: 'breaded_chicken_pieces',
       state: 'frozen',
       fryerClassId: 'drawer_compact_low',
-      basketLoad: 'crowded',
+      basketLoad: 'packed',
       crispness: 'standard',
     });
 
@@ -59,12 +59,13 @@ describe('convertOvenToAirFryer', () => {
       categoryId: 'breaded_chicken_pieces',
       state: 'frozen',
       fryerClassId: 'drawer_dual_high',
-      basketLoad: 'single_layer',
+      basketLoad: 'single',
       crispness: 'standard',
     });
 
     expect(compact.timeEstimate).toBeGreaterThan(dual.timeEstimate);
     expect(compact.confidence.level).toBe('medium');
+    expect(compact.loadGuidance).toContain('Packed basket.');
   });
 
   it('reduces time for chilled reheating and adds the reheating safety note', () => {
@@ -75,7 +76,7 @@ describe('convertOvenToAirFryer', () => {
       categoryId: 'reheating_cooked_items',
       state: 'chilled',
       fryerClassId: 'drawer_standard',
-      basketLoad: 'single_layer',
+      basketLoad: 'single',
       thickness: 'thin',
     });
 
@@ -102,11 +103,43 @@ describe('convertOvenToAirFryer', () => {
       categoryId: 'simple_vegetable_sides',
       state: 'fresh',
       fryerClassId: 'oven_or_combi_large',
-      basketLoad: 'crowded',
+      basketLoad: 'packed',
       thickness: 'thick',
     });
 
     expect(result.confidence.level).toBe('low');
     expect(result.notes).toContain('Results may vary more than usual for this combination.');
+  });
+
+  it('uses category-specific packed adjustments and notes for fries', () => {
+    const single = convertOvenToAirFryer({
+      ovenTemp: 200,
+      ovenTime: 20,
+      ovenType: 'fan',
+      categoryId: 'fries_chips_wedges',
+      state: 'frozen',
+      fryerClassId: 'drawer_standard',
+      basketLoad: 'single',
+      crispness: 'standard',
+      thickness: 'standard',
+    });
+
+    const packed = convertOvenToAirFryer({
+      ovenTemp: 200,
+      ovenTime: 20,
+      ovenType: 'fan',
+      categoryId: 'fries_chips_wedges',
+      state: 'frozen',
+      fryerClassId: 'drawer_standard',
+      basketLoad: 'packed',
+      crispness: 'standard',
+      thickness: 'standard',
+    });
+
+    expect(packed.timeEstimate).toBeGreaterThan(single.timeEstimate);
+    expect(packed.loadGuidance).toContain('Packed fries lose airflow quickly');
+    expect(packed.notes).toContain(
+      'If you want the strongest airflow and crisping, cook in batches instead of packing the basket.',
+    );
   });
 });

@@ -2,7 +2,6 @@ import { categoryProfileMap } from '../data/categoryProfiles';
 import { fryerClassProfileMap } from '../data/fryerClassProfiles';
 import {
   crispnessMultipliers,
-  loadMultipliers,
   stateMultipliers,
   temperatureClamp,
   thicknessMultipliers,
@@ -26,7 +25,15 @@ export function normalizeOvenTemp(
 }
 
 function getLoadMultiplier(load: BasketLoad, fryerClass: FryerClassProfile): number {
-  return loadMultipliers[load] + (fryerClass.loadAdjustments[load] ?? 0);
+  return 1 + (fryerClass.loadAdjustments[load] ?? 0);
+}
+
+function getBasketLoadMultiplier(
+  load: BasketLoad,
+  category: CategoryProfile,
+  fryerClass: FryerClassProfile,
+): number {
+  return category.basketLoadTimeAdjustments[load] * getLoadMultiplier(load, fryerClass);
 }
 
 function getThicknessMultiplier(
@@ -110,6 +117,10 @@ function buildNotes(
 ): string[] {
   const notes = ['Use this as a starting point and adjust if needed.'];
 
+  if (input.basketLoad !== 'single') {
+    notes.push(category.basketLoadNotes[input.basketLoad]);
+  }
+
   if (category.pipingHotNote) {
     notes.push('Ensure the food is piping hot throughout before serving.');
   }
@@ -118,8 +129,8 @@ function buildNotes(
     notes.push('If the outside browns too fast, lower the temperature slightly and cook for longer.');
   }
 
-  if (input.basketLoad === 'crowded') {
-    notes.push(category.batchGuidance);
+  if (input.basketLoad === 'packed') {
+    notes.push('If you want the strongest airflow and crisping, cook in batches instead of packing the basket.');
   }
 
   if (fryerClass.id === 'oven_or_combi_large') {
@@ -149,7 +160,7 @@ export function convertOvenToAirFryer(input: ConversionInput): ConversionResult 
   const category = categoryProfileMap[input.categoryId];
   const fryerClass = fryerClassProfileMap[input.fryerClassId];
   const state = input.state ?? category.defaultState;
-  const basketLoad = input.basketLoad ?? 'single_layer';
+  const basketLoad = input.basketLoad ?? 'single';
   const crispness = input.crispness ?? 'standard';
   const thickness = category.supportsThickness ? input.thickness : undefined;
   const normalizedOvenTemp = normalizeOvenTemp(input.ovenTemp, input.ovenType);
@@ -158,7 +169,7 @@ export function convertOvenToAirFryer(input: ConversionInput): ConversionResult 
   estimatedTime *= category.baselineTimeFactor;
   estimatedTime *= fryerClass.timeMultiplier;
   estimatedTime *= stateMultipliers[state];
-  estimatedTime *= getLoadMultiplier(basketLoad, fryerClass);
+  estimatedTime *= getBasketLoadMultiplier(basketLoad, category, fryerClass);
 
   if (category.supportsCrispness) {
     estimatedTime *= crispnessMultipliers[crispness];
@@ -206,10 +217,7 @@ export function convertOvenToAirFryer(input: ConversionInput): ConversionResult 
     timeRange,
     checkAt,
     agitation: resolveAgitationText(category),
-    loadGuidance:
-      basketLoad === 'single_layer'
-        ? category.loadGuidance
-        : `${describeLoadEffect(basketLoad)} ${category.batchGuidance}`,
+    loadGuidance: `${describeLoadEffect(basketLoad)} ${category.basketLoadNotes[basketLoad]}`,
     confidence,
     standTime:
       category.id === 'reheating_cooked_items'
