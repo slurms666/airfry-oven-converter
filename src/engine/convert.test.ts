@@ -31,6 +31,10 @@ describe('convertOvenToAirFryer', () => {
       high: 14,
       label: '12-14 minutes',
     });
+    expect(result.recommendedCookMinutes).toBe(13);
+    expect(result.actionType).toBe('shake');
+    expect(result.actionTimes).toEqual([390]);
+    expect(result.actionSummary).toBe('Shake at 6:30');
     expect(result.checkAt).toBe(11);
     expect(result.agitation).toBe('Shake halfway through');
     expect(result.confidence.level).toBe('high');
@@ -76,6 +80,8 @@ describe('convertOvenToAirFryer', () => {
     });
 
     expect(result.timeEstimate).toBeLessThan(12);
+    expect(result.actionType).toBe('check');
+    expect(result.actionTimes.length).toBe(1);
     expect(result.notes).toContain('Ensure the food is piping hot throughout before serving.');
     expect(result.standTime).toBeDefined();
   });

@@ -22,6 +22,7 @@ export type AgitationId =
   | 'turn_or_shake_halfway'
   | 'usually_no_agitation'
   | 'depends';
+export type GuidedActionType = 'shake' | 'turn' | 'check' | 'none';
 export type ConfidenceLevel = 'high' | 'medium' | 'low';
 
 export interface ConversionInput {
@@ -82,6 +83,11 @@ export interface ConversionResult {
   normalizedOvenTemp: number;
   airFryerTemp: number;
   timeEstimate: number;
+  recommendedCookMinutes: number;
+  agitationId: AgitationId;
+  actionType: GuidedActionType;
+  actionTimes: number[];
+  actionSummary: string;
   timeRange: {
     low: number;
     high: number;

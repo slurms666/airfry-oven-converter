@@ -459,6 +459,49 @@ h2 {
   box-shadow: 0 20px 30px rgba(177, 198, 88, 0.28);
 }
 
+.secondary-button,
+.ghost-button {
+  border-radius: 999px;
+  padding: 14px 18px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.secondary-button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.ghost-button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+}
+
+.secondary-button:hover,
+.secondary-button:focus-visible,
+.ghost-button:hover,
+.ghost-button:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.secondary-button:hover,
+.secondary-button:focus-visible {
+  border-color: var(--line-strong);
+}
+
+.ghost-button:hover,
+.ghost-button:focus-visible {
+  color: var(--ink);
+}
+
 .result-header {
   display: flex;
   align-items: flex-start;
@@ -494,12 +537,32 @@ h2 {
 }
 
 .result-time {
-  margin: 18px 0 8px;
+  margin: 6px 0 6px;
   font-size: clamp(2.75rem, 4.8vw, 4rem);
   line-height: 0.98;
   font-weight: 800;
   letter-spacing: -0.05em;
   color: var(--ink);
+}
+
+.result-kicker {
+  margin: 18px 0 0;
+  font-size: 0.84rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: #6d7a39;
+}
+
+.result-range-note {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+.result-action-note {
+  margin: 0 0 10px;
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .fact-grid {
@@ -554,6 +617,163 @@ h2 {
   text-transform: uppercase;
   font-weight: 800;
   color: #6d7a39;
+}
+
+.timer-panel {
+  margin: 0 0 20px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: linear-gradient(180deg, #ffffff 0%, #fafbf5 100%);
+}
+
+.timer-panel-unavailable {
+  margin-top: 6px;
+}
+
+.timer-header,
+.timer-upcoming-row,
+.timer-alert,
+.timer-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.timer-header {
+  margin-bottom: 16px;
+}
+
+.timer-header h3 {
+  margin: 4px 0 0;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.timer-status {
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.timer-status-idle {
+  background: var(--surface-muted);
+  color: var(--ink);
+}
+
+.timer-status-running {
+  background: #eef7d4;
+  color: var(--success);
+}
+
+.timer-status-action {
+  background: #faf1cf;
+  color: var(--warning);
+}
+
+.timer-status-complete {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.timer-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.timer-metric-card,
+.timer-alert {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface-soft);
+}
+
+.timer-metric-card {
+  padding: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.timer-metric-card strong {
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.timer-metric-label,
+.timer-alert-title {
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: #6d7a39;
+}
+
+.timer-schedule-block {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.timer-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.timer-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.timer-chip-upcoming {
+  border-color: rgba(200, 231, 90, 0.76);
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.timer-alert {
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.timer-alert p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.timer-alert-title {
+  margin-bottom: 6px;
+}
+
+.timer-alert-action {
+  background: #fffbef;
+}
+
+.timer-alert-complete {
+  background: #f4f9dc;
+}
+
+.timer-muted {
+  margin: 16px 0 0;
+  color: var(--muted);
+}
+
+.timer-actions {
+  margin-top: 16px;
 }
 
 .stand-time {
@@ -663,5 +883,16 @@ h2 {
 
   .result-header {
     flex-direction: column;
+  }
+
+  .timer-header,
+  .timer-upcoming-row,
+  .timer-alert,
+  .timer-actions {
+    flex-direction: column;
+  }
+
+  .timer-metrics {
+    grid-template-columns: 1fr;
   }
 }

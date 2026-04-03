@@ -16,6 +16,7 @@ import type {
   Thickness,
 } from '../types';
 import { calculateConfidence, describeLoadEffect } from './confidence';
+import { buildGuidedActionDetails } from '../utils/guidedTimer';
 
 export function normalizeOvenTemp(
   ovenTemp: number,
@@ -168,6 +169,18 @@ export function convertOvenToAirFryer(input: ConversionInput): ConversionResult 
   estimatedTime = Math.max(category.minimumCookTime, estimatedTime);
 
   const timeRange = buildTimeRange(estimatedTime, category.rangeSpread);
+  const checkAt = Math.max(1, timeRange.low - 1);
+  const guidedAction =
+    buildGuidedActionDetails({
+      agitationId: category.agitation,
+      checkAt,
+      timeRange,
+    }) ?? {
+      recommendedCookMinutes: timeRange.high,
+      actionType: 'none' as const,
+      actionTimes: [],
+      actionSummary: 'None needed',
+    };
   const confidence = calculateConfidence(
     {
       ovenType: input.ovenType,
@@ -185,8 +198,13 @@ export function convertOvenToAirFryer(input: ConversionInput): ConversionResult 
     normalizedOvenTemp,
     airFryerTemp: clampTemp(category.baselineAirFryerTemp),
     timeEstimate: estimatedTime,
+    recommendedCookMinutes: guidedAction.recommendedCookMinutes,
+    agitationId: category.agitation,
+    actionType: guidedAction.actionType,
+    actionTimes: guidedAction.actionTimes,
+    actionSummary: guidedAction.actionSummary,
     timeRange,
-    checkAt: Math.max(1, timeRange.low - 1),
+    checkAt,
     agitation: resolveAgitationText(category),
     loadGuidance:
       basketLoad === 'single_layer'

@@ -1,4 +1,6 @@
 import type { ConversionResult } from '../types';
+import { buildGuidedTimerPlan } from '../utils/guidedTimer';
+import { GuidedTimerPanel } from './GuidedTimerPanel';
 
 interface ResultCardProps {
   result: ConversionResult | null;
@@ -68,6 +70,26 @@ function confidenceLabel(level: ConversionResult['confidence']['level']) {
   return 'Low confidence';
 }
 
+function confidenceHeading(level: ConversionResult['confidence']['level']) {
+  if (level === 'high') {
+    return 'Why this estimate is steady';
+  }
+
+  if (level === 'medium') {
+    return 'What could shift the result';
+  }
+
+  return 'Why this may vary more';
+}
+
+function actionTypeLabel(actionType: ConversionResult['actionType']) {
+  if (actionType === 'none') {
+    return 'None';
+  }
+
+  return actionType.charAt(0).toUpperCase() + actionType.slice(1);
+}
+
 export function ResultCard({ result }: ResultCardProps) {
   if (!result) {
     return (
@@ -81,6 +103,8 @@ export function ResultCard({ result }: ResultCardProps) {
       </section>
     );
   }
+
+  const timerPlan = buildGuidedTimerPlan(result);
 
   return (
     <section className="result-panel">
@@ -97,10 +121,21 @@ export function ResultCard({ result }: ResultCardProps) {
         </span>
       </div>
 
-      <p className="result-time">{result.timeRange.label}</p>
+      {timerPlan ? (
+        <>
+          <p className="result-kicker">Cook for</p>
+          <p className="result-time">{timerPlan.recommendedCookLabel}</p>
+          <p className="result-range-note">Estimated range: {timerPlan.estimatedRangeLabel}</p>
+          <p className="result-action-note">
+            {timerPlan.actionSummaryLabel}: {timerPlan.actionSummary}
+          </p>
+        </>
+      ) : (
+        <p className="result-time">{result.timeRange.label}</p>
+      )}
+
       <p className="supporting-copy">
-        Adjusted from your oven instructions using the selected category, fryer class, and
-        options.
+        Based on the oven instructions you entered and your fryer setup.
       </p>
 
       <div className="fact-grid">
@@ -108,34 +143,36 @@ export function ResultCard({ result }: ResultCardProps) {
           <span className="fact-icon">
             <ResultIcon type="clock" />
           </span>
-          <span className="fact-label">Check at</span>
+          <span className="fact-label">First check</span>
           <strong>{result.checkAt} minutes</strong>
         </div>
         <div className="fact-card">
           <span className="fact-icon">
             <ResultIcon type="move" />
           </span>
-          <span className="fact-label">Halfway</span>
-          <strong>{result.agitation}</strong>
+          <span className="fact-label">Action type</span>
+          <strong>{actionTypeLabel(result.actionType)}</strong>
         </div>
         <div className="fact-card">
           <span className="fact-icon">
             <ResultIcon type="basket" />
           </span>
-          <span className="fact-label">Load guidance</span>
+          <span className="fact-label">Basket setup</span>
           <strong>{result.loadGuidance}</strong>
         </div>
       </div>
 
+      <GuidedTimerPanel plan={timerPlan} />
+
       {result.standTime ? <p className="stand-time">{result.standTime}</p> : null}
 
       <div className="confidence-block">
-        <p className="confidence-heading">{confidenceLabel(result.confidence.level)}</p>
+        <p className="confidence-heading">{confidenceHeading(result.confidence.level)}</p>
         <p>{result.confidence.reason}</p>
       </div>
 
       <div className="notes-block">
-        <p className="notes-heading">Practical notes</p>
+        <p className="notes-heading">Worth keeping in mind</p>
         <ul>
           {result.notes.map((note) => (
             <li key={note}>{note}</li>
