@@ -98,16 +98,15 @@ export default function App() {
       <header className="hero">
         <div className="hero-copy">
           <p className="eyebrow">Oven to Air Fryer Converter</p>
-          <h1>Turn pack instructions into a sensible air-fryer starting point.</h1>
+          <h1>Turn pack instructions into practical air-fryer settings.</h1>
           <p className="lede">
-            Use the oven instructions on the pack as your starting point, then convert them with
-            category-based rules, fryer-class adjustments, and practical guidance you can follow
-            straight away.
+            Enter the oven instructions from the pack, then get air-fryer settings with practical
+            timing, basket guidance, and mid-cook reminders you can use straight away.
           </p>
         </div>
 
         <aside className="hero-note">
-          <p className="eyebrow">Supported v1 scope</p>
+          <p className="eyebrow">Works Best For</p>
           <ul>
             <li>Frozen fries, chips, and wedges</li>
             <li>Frozen breaded chicken pieces</li>
@@ -144,18 +143,18 @@ export default function App() {
 
       <section className="help-strip">
         <div>
-          <p className="eyebrow">Why it behaves this way</p>
+          <p className="eyebrow">How It Works</p>
           <p>
-            Time changes more than temperature in v1. The converter normalises fan vs
-            conventional oven input, applies a category baseline, then layers on fryer class,
-            load, crispness, thickness, and optional wattage adjustments.
+            Time usually shifts more than temperature. The converter normalises fan vs
+            conventional oven input, applies a food-type baseline, then layers on fryer class,
+            basket load, crispness, thickness, and optional wattage adjustments.
           </p>
         </div>
         <div>
-          <p className="eyebrow">Trust boundary</p>
+          <p className="eyebrow">Good To Know</p>
           <p>
-            This is a starting point, not a guarantee. Unsupported risky raw-food categories are
-            intentionally left out of the main flow.
+            These settings are a practical guide, not a guarantee. The tool is designed for common
+            packaged foods and straightforward reheating, not raw or safety-critical foods.
           </p>
         </div>
       </section>

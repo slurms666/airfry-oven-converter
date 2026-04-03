@@ -204,6 +204,7 @@ export function ConversionForm({
         <div className="section-header">
           <p className="eyebrow">Step 4</p>
           <h2>How full will the basket be?</h2>
+          <p>Not sure? See photo examples of each basket fill.</p>
         </div>
 
         <div className="load-grid">
@@ -232,7 +233,7 @@ export function ConversionForm({
             onClick={() => setShowBasketLoadHelp((current) => !current)}
             type="button"
           >
-            {showBasketLoadHelp ? 'Hide examples' : 'See examples'}
+            {showBasketLoadHelp ? 'Hide photo examples' : 'See photo examples'}
           </button>
 
           {showBasketLoadHelp ? (
@@ -303,7 +304,7 @@ export function ConversionForm({
             {errors.exactWattage ? (
               <small className="error">{errors.exactWattage}</small>
             ) : (
-              <small className="hint">Optional. This only nudges the time slightly in v1.</small>
+              <small className="hint">Optional. This only nudges the time slightly.</small>
             )}
           </label>
         </div>

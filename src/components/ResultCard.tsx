@@ -95,10 +95,10 @@ export function ResultCard({ result }: ResultCardProps) {
     return (
       <section className="result-panel placeholder-panel">
         <p className="eyebrow">Result</p>
-        <h2>Your starting point will appear here.</h2>
+        <h2>Your air-fryer settings will appear here.</h2>
         <p className="placeholder-copy">
-          Enter the oven instructions, choose a supported category, and the tool will return
-          a practical air-fryer temperature, time range, method guidance, and confidence note.
+          Enter the oven instructions, choose the closest food type, and the tool will return a
+          practical air-fryer temperature, cook time, method guidance, and confidence note.
         </p>
       </section>
     );
@@ -110,7 +110,7 @@ export function ResultCard({ result }: ResultCardProps) {
     <section className="result-panel">
       <div className="result-header">
         <div>
-          <p className="eyebrow">Suggested starting point</p>
+          <p className="eyebrow">Suggested settings</p>
           <h2>
             Air fry at {result.airFryerTemp}
             {'\u00b0'}C

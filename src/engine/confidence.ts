@@ -37,7 +37,7 @@ function buildReason(
   cautions: string[],
 ): string {
   if (level === 'high') {
-    return positives[0] ?? 'Supported category with a straightforward conversion path.';
+    return positives[0] ?? 'Common food type with a straightforward conversion path.';
   }
 
   if (level === 'medium') {

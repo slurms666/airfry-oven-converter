@@ -20,13 +20,13 @@ export function validateForm(values: FormValues): ValidationErrors {
   if (ovenTemp === undefined) {
     errors.ovenTemp = 'Enter the oven temperature from the pack or recipe.';
   } else if (ovenTemp < 100 || ovenTemp > 260) {
-    errors.ovenTemp = 'Use a sensible v1 range between 100°C and 260°C.';
+    errors.ovenTemp = 'Use a sensible range between 100°C and 260°C.';
   }
 
   if (ovenTime === undefined) {
     errors.ovenTime = 'Enter the oven time in minutes.';
   } else if (ovenTime < 1 || ovenTime > 240) {
-    errors.ovenTime = 'Use a sensible v1 range between 1 and 240 minutes.';
+    errors.ovenTime = 'Use a sensible range between 1 and 240 minutes.';
   }
 
   if (values.exactWattage.trim() !== '') {
